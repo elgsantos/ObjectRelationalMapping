@@ -7,6 +7,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import entidades.Pessoa;
+import entidades.PessoaPK;
+import entidades.PessoaPKcomposta;
 import util.JPAutil;
 
 public class PrimeiroTeste {
@@ -14,6 +16,7 @@ public class PrimeiroTeste {
 	public static void main(String[] args) {
 
 		/* Inserindo uma nova entidade*/
+		/*
 		Pessoa p = new Pessoa();
 		p.setNome("Eduardo");
 		p.setSalario(2.223);
@@ -27,7 +30,7 @@ public class PrimeiroTeste {
 		
 		tx.commit();
 		JPAutil.close();
-		
+		*/
 		/*entidade existente no contexto
 		EntityManager unGerenciadora = JPAutil.getEntityManager();
 		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
@@ -192,6 +195,23 @@ public class PrimeiroTeste {
 		
 		JPAutil.close();
 */
+		/*Testando mapeamento pk composta - classe embutida*/
+		
+		PessoaPKcomposta ppk = new PessoaPKcomposta();
+		
+		ppk.setPk(new PessoaPK("1","1"));
+		ppk.setNome("Thiago");
+		ppk.setSalario(200.0);
+		
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		unGerenciadora.persist(ppk);
+		
+		tx.commit();
+		JPAutil.close();
 	}
 
 }
