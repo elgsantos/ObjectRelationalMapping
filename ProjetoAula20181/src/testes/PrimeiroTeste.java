@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import entidades.Pessoa;
 import entidades.PessoaPK;
 import entidades.PessoaPKcomposta;
+import entidades.PessoaPKcomposta2;
 import util.JPAutil;
 
 public class PrimeiroTeste {
@@ -196,7 +197,7 @@ public class PrimeiroTeste {
 		JPAutil.close();
 */
 		/*Testando mapeamento pk composta - classe embutida*/
-		
+		/*
 		PessoaPKcomposta ppk = new PessoaPKcomposta();
 		
 		ppk.setPk(new PessoaPK("1","1"));
@@ -209,6 +210,24 @@ public class PrimeiroTeste {
 		tx.begin();
 		
 		unGerenciadora.persist(ppk);
+		
+		tx.commit();
+		JPAutil.close();
+		*/
+		/*Testando mapeamento pk composta - classe embutida estrategia 2 */
+		PessoaPKcomposta2 ppk2 = new PessoaPKcomposta2();
+		
+		ppk2.setCpf("1");
+		ppk2.setRg("1");
+		ppk2.setNome("Thiago");
+		ppk2.setSalario(200.0);
+		
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		unGerenciadora.persist(ppk2);
 		
 		tx.commit();
 		JPAutil.close();

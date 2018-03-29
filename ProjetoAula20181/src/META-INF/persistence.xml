@@ -4,6 +4,7 @@
 		<class>entidades.Pessoa</class>
 		<class>entidades.PessoaPK</class>
 		<class>entidades.PessoaPKcomposta</class>
+		<class>entidades.PessoaPKcomposta2</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/aulajpa"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
