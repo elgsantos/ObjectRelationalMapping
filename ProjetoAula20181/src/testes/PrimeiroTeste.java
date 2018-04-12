@@ -1,5 +1,6 @@
 package testes;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,9 +12,11 @@ import entidades.PessoaPK;
 import entidades.PessoaPKcomposta;
 import entidades.PessoaPKcomposta2;
 import util.JPAutil;
+import util.TipoPessoa;
 
 public class PrimeiroTeste {
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 
 		/* Inserindo uma nova entidade*/
@@ -215,6 +218,7 @@ public class PrimeiroTeste {
 		JPAutil.close();
 		*/
 		/*Testando mapeamento pk composta - classe embutida estrategia 2 */
+		/*
 		PessoaPKcomposta2 ppk2 = new PessoaPKcomposta2();
 		
 		ppk2.setCpf("1");
@@ -228,6 +232,26 @@ public class PrimeiroTeste {
 		tx.begin();
 		
 		unGerenciadora.persist(ppk2);
+		
+		tx.commit();
+		JPAutil.close();
+		*/
+		/*TESTANDO MAPEAMENTO ENUM*/
+		Pessoa p = new Pessoa();
+		
+		p.setNome("Eduardo");
+		p.setSalario(2.20);
+		p.setTipoPessoa(TipoPessoa.ESTUDANTE);
+		p.setDataNascimento(new Date("1983/07/02"));
+		
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		unGerenciadora.persist(p);
+		
+		System.out.println(p.getDescricao());
 		
 		tx.commit();
 		JPAutil.close();
