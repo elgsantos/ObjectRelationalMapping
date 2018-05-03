@@ -1,11 +1,21 @@
 package testes;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import entidades.Pessoa;
 import entidades.PessoaPK;
@@ -17,7 +27,7 @@ import util.TipoPessoa;
 public class PrimeiroTeste {
 
 	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		/* Inserindo uma nova entidade*/
 		/*
@@ -237,6 +247,7 @@ public class PrimeiroTeste {
 		JPAutil.close();
 		*/
 		/*TESTANDO MAPEAMENTO ENUM*/
+		/*
 		Pessoa p = new Pessoa();
 		
 		p.setNome("Eduardo");
@@ -255,6 +266,49 @@ public class PrimeiroTeste {
 		
 		tx.commit();
 		JPAutil.close();
+		*/
+		/*TESTANDO MAPEAMENTO CLOB E BLOB*/
+		/*
+		Pessoa p = new Pessoa();
+		
+		p.setNome("Eduardo");
+		p.setSalario(2.20);
+		p.setTipoPessoa(TipoPessoa.ESTUDANTE);
+		p.setDataNascimento(new Date("1983/07/02"));
+		
+		StringBuilder historico = new StringBuilder();
+		
+		historico.append("\nPersona fulano de tal, adicionou um item");
+		historico.append("\nPersona fulano de tal, removeu um item");
+		historico.append("\nO personagem evoluiu para o level 3.");
+		
+		p.setHistorico(historico.toString().toCharArray());
+		
+		Path path = FileSystems.getDefault().getPath("C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg");
+		byte[] foto = Files.readAllBytes(path);
+		p.setFoto(foto);
+		
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		unGerenciadora.persist(p);
+		
+		System.out.println(p.getDescricao());
+		
+		tx.commit();
+		JPAutil.close();
+		*/
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
+		
+		if(p.getFoto()!=null) {
+			BufferedImage img = ImageIO.read(new ByteArrayInputStream(p.getFoto()));
+			JOptionPane.showMessageDialog(null, new JLabel(new ImageIcon(img)));
+		}
+		
+		unGerenciadora.close();
 	}
 
 }

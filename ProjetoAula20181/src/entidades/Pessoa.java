@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,6 +43,14 @@ public class Pessoa {
 
 	@Transient
 	private String desc;
+	
+	@Column(name = "historico")
+	@Lob
+	private char[] historico;
+	
+	@Column(name = "foto")
+	@Lob
+	private byte[] foto;
 	
 	public int getId() {
 		return id;
@@ -93,6 +102,22 @@ public class Pessoa {
 		this.desc = desc;
 	}
 	
+	public char[] getHistorico() {
+		return historico;
+	}
+
+	public void setHistorico(char[] historico) {
+		this.historico = historico;
+	}
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+
 	@Override
 	public String toString() {
 		return "Pessoa [id=" + id + ", nome=" + nome + ", salario=" + salario + ", tipoPessoa=" + tipoPessoa
