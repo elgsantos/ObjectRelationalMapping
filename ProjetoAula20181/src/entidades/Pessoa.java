@@ -122,6 +122,5 @@ public class Pessoa {
 	public String toString() {
 		return "Pessoa [id=" + id + ", nome=" + nome + ", salario=" + salario + ", tipoPessoa=" + tipoPessoa
 				+ ", dataNascimento=" + dataNascimento + "]";
-	}
-	
+	}	
 }
