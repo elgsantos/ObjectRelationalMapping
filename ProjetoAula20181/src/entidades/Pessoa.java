@@ -9,7 +9,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,6 +53,10 @@ public class Pessoa {
 	@Column(name = "foto")
 	@Lob
 	private byte[] foto;
+	
+	@OneToOne
+	@JoinColumn(name = "endereco_id")
+	private Endereco endereco;
 	
 	public int getId() {
 		return id;
@@ -122,5 +128,14 @@ public class Pessoa {
 	public String toString() {
 		return "Pessoa [id=" + id + ", nome=" + nome + ", salario=" + salario + ", tipoPessoa=" + tipoPessoa
 				+ ", dataNascimento=" + dataNascimento + "]";
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}	
+	
 }

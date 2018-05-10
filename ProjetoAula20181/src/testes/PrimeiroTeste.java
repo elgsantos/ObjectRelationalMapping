@@ -1,26 +1,14 @@
 package testes;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Date;
-import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
+import entidades.Complemento;
+import entidades.Endereco;
 import entidades.Pessoa;
-import entidades.PessoaPK;
-import entidades.PessoaPKcomposta;
-import entidades.PessoaPKcomposta2;
 import util.JPAutil;
 import util.TipoPessoa;
 
@@ -300,6 +288,7 @@ public class PrimeiroTeste {
 		tx.commit();
 		JPAutil.close();
 		*/
+		/* Recuperar arquivo do banco
 		EntityManager unGerenciadora = JPAutil.getEntityManager();
 		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
 		
@@ -309,6 +298,67 @@ public class PrimeiroTeste {
 		}
 		
 		unGerenciadora.close();
+		*/
+		/* heranca embbeded
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		Complemento c = new Complemento();
+		c.setNome("Loja 1");
+		c.setDescricao("Loja 1 que fica no segundo andar");
+		c.setReferencia("Em frente ao mestre do suco");
+		
+		Endereco endereco = new Endereco();
+		endereco.setId(1);
+		endereco.setRua("Rua 1");
+		endereco.setNumero(1);
+		endereco.setBairro("Fonseca");
+		endereco.setCep("123456");
+		endereco.setCidade("niteroi");
+		endereco.setEstado("RJ");
+		endereco.setComplemento(c);
+		
+		unGerenciadora.persist(endereco);
+		
+		tx.commit();
+		JPAutil.close();
+		*/
+		//Testando one to one
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		Complemento c = new Complemento();
+		c.setNome("Loja 1");
+		c.setDescricao("Loja 1 que fica no segundo andar");
+		c.setReferencia("Em frente ao mestre do suco");
+		
+		Endereco endereco = new Endereco();
+		endereco.setId(1);
+		endereco.setRua("Rua 1");
+		endereco.setNumero(1);
+		endereco.setBairro("Fonseca");
+		endereco.setCep("123456");
+		endereco.setCidade("niteroi");
+		endereco.setEstado("RJ");
+		endereco.setComplemento(c);
+		
+		Pessoa p = new Pessoa();
+		p.setId(1);
+		p.setNome("Eduardo");
+		p.setSalario(2.00);
+		p.setTipoPessoa(TipoPessoa.ESTUDANTE);
+		p.setDataNascimento(new Date(1990/01/01));
+		p.setEndereco(endereco);
+		
+		unGerenciadora.persist(endereco);
+		unGerenciadora.persist(p);
+		
+		tx.commit();
+		JPAutil.close();
 	}
 
 }
