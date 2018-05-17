@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import entidades.Complemento;
+import entidades.Dispositivo;
 import entidades.Endereco;
 import entidades.Pessoa;
 import util.JPAutil;
@@ -326,6 +327,7 @@ public class PrimeiroTeste {
 		JPAutil.close();
 		*/
 		//Testando one to one
+		/*
 		EntityManager unGerenciadora = JPAutil.getEntityManager();
 		EntityTransaction tx = unGerenciadora.getTransaction();
 		
@@ -358,6 +360,50 @@ public class PrimeiroTeste {
 		unGerenciadora.persist(p);
 		
 		tx.commit();
+		JPAutil.close();
+		*/
+//		Testando one to one unidirecional
+		/*
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		
+		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
+		
+		System.out.println("ID: " +p.getId()+" / nome: "+p.getNome());
+		
+		unGerenciadora.close();
+		JPAutil.close();
+		*/
+//		Testando one to one bidirecional
+		/*
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		
+		Endereco end = unGerenciadora.find(Endereco.class, 1);
+		
+		System.out.println("ID: " +end.getId()+" / nome: "+end.getRua());
+		
+		unGerenciadora.close();
+		JPAutil.close();
+		*/
+//		Testando one to one bidirecional
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
+		
+		Dispositivo disp = new Dispositivo();
+
+		disp.setDescricao("PC");
+		disp.setPessoa(p);
+		
+		unGerenciadora.persist(disp);
+		
+		System.out.println("ID: " +p.getId()+" / nome: "+p.getNome());
+		
+		tx.commit();
+		
+		unGerenciadora.close();
 		JPAutil.close();
 	}
 

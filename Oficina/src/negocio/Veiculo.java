@@ -12,7 +12,8 @@ public class Veiculo {
 	public int id;
 
 	public String tipo;
-
+	
+	private Cliente cliente;
 
 	public Veiculo() {
 	}
@@ -33,5 +34,14 @@ public class Veiculo {
 		this.tipo = tipo;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
+	
 
 }

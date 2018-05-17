@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,6 +31,15 @@ public class Endereco {
 	@Embedded
 	Complemento complemento;
 	
+	@OneToOne(mappedBy="endereco")
+	Pessoa pessoa;
+	
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}
 	public Complemento getComplemento() {
 		return complemento;
 	}
