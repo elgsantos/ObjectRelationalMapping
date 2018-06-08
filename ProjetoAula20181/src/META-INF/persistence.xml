@@ -8,6 +8,10 @@
 		<class>entidades.Endereco</class>
 		<class>entidades.Complemento</class>
 		<class>entidades.Dispositivo</class>
+		<class>entidades.Acessorio</class>
+		<class>entidades.Persona</class>
+		<class>entidades.Aluno</class>
+		<class>entidades.Professor</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/aulajpa"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>

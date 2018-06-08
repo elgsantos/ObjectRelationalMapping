@@ -1,17 +1,13 @@
 package testes;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import entidades.Complemento;
-import entidades.Dispositivo;
-import entidades.Endereco;
-import entidades.Pessoa;
+import entidades.Aluno;
+import entidades.Professor;
 import util.JPAutil;
-import util.TipoPessoa;
 
 public class PrimeiroTeste {
 
@@ -362,29 +358,35 @@ public class PrimeiroTeste {
 		tx.commit();
 		JPAutil.close();
 		*/
-//		Testando one to one unidirecional
-		/*
+		
+/*TESTANDO RELACIONAMENTO @OnToOne UNIDIRECIONAL
+		
 		EntityManager unGerenciadora = JPAutil.getEntityManager();
 		
 		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
 		
-		System.out.println("ID: " +p.getId()+" / nome: "+p.getNome());
+		System.out.println("ID: " + p.getId() + " / NOME: " + p.getNome());
 		
 		unGerenciadora.close();
 		JPAutil.close();
+		
 		*/
-//		Testando one to one bidirecional
-		/*
+		
+		/*TESTANDO RELACIONAMENTO @OnToOne BIDIRECIONAL
+		
 		EntityManager unGerenciadora = JPAutil.getEntityManager();
 		
 		Endereco end = unGerenciadora.find(Endereco.class, 1);
 		
-		System.out.println("ID: " +end.getId()+" / nome: "+end.getRua());
+		System.out.println("ID: " + end.getId() + " / NOME: " + end.getRua());
 		
 		unGerenciadora.close();
 		JPAutil.close();
+		
 		*/
-//		Testando one to one bidirecional
+
+		/*TESTANDO RELACIONAMENTO @ManyToOne - Inserção*/
+		/*
 		EntityManager unGerenciadora = JPAutil.getEntityManager();
 		EntityTransaction tx = unGerenciadora.getTransaction();
 		
@@ -393,18 +395,95 @@ public class PrimeiroTeste {
 		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
 		
 		Dispositivo disp = new Dispositivo();
-
+		
 		disp.setDescricao("PC");
 		disp.setPessoa(p);
 		
 		unGerenciadora.persist(disp);
 		
-		System.out.println("ID: " +p.getId()+" / nome: "+p.getNome());
+		System.out.println("ID: " + p.getId() + " / NOME: " + p.getNome());
 		
 		tx.commit();
 		
 		unGerenciadora.close();
 		JPAutil.close();
+		*/
+		
+		/*TESTANDO RELACIONAMENTO @OneToMany BIDIRECIONAL*/
+		/*
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
+		
+		System.out.println("dispositivo: " + p.getDispositivos().toString());
+		
+		tx.commit();
+		
+		unGerenciadora.close();
+		JPAutil.close();
+		*/
+		
+		/*TESTANDO RELACIONAMENTO @ManyToMany INSERÇÃO*/
+		/*
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		Pessoa p = unGerenciadora.find(Pessoa.class, 1);
+		
+		Dispositivo disp = p.getDispositivos().get(0);
+		
+		Acessorio aces = new Acessorio();
+		
+		aces.setDescricao("Fone ouvido");
+		
+		unGerenciadora.persist(aces);
+		
+		Set<Acessorio> acessorios = new HashSet<Acessorio>();
+		
+		acessorios.add(aces);
+		
+		disp.setAcessorios(acessorios);
+		
+		//System.out.println("ID: " + p.getId() + " / NOME: " + p.getNome());
+		
+		tx.commit();
+		
+		unGerenciadora.close();
+		JPAutil.close();
+		*/
+		/*TESTANDO MAPEAMENTO DE HERANÇA - TABELA UNICA*/
+		/*
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		Professor p = new Professor();
+		
+		p.setNome("Thiago");
+		p.setCurso("Sistemas de Informação");
+		p.setLotacao("UNIDADE RJ");
+		p.setSalario(1000.00);
+		
+		unGerenciadora.persist(p);
+		Aluno a = new Aluno();
+		
+		a.setNome("Thiago");
+		a.setMensalidade(1000.00);
+		a.setEstagiario(true);
+		
+		unGerenciadora.persist(a);
+		
+		tx.commit();
+		
+		unGerenciadora.close();
+		JPAutil.close();
+		*/
 	}
 
 }

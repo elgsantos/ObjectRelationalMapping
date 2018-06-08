@@ -2,6 +2,8 @@ package entidades;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,6 +26,9 @@ public class Dispositivo implements Serializable {
 	public int getId() {
 		return this.id;
 	}
+	
+	@ManyToMany
+	private Set<Acessorio> acessorios;
 
 	public void setId(int id) {
 		this.id = id;
@@ -44,6 +49,12 @@ public class Dispositivo implements Serializable {
 		this.pessoa = pessoa;
 	}
 	
-	
+	public Set<Acessorio> getAcessorios() {
+		return acessorios;
+	}
+
+	public void setAcessorios(Set<Acessorio> acessorios) {
+		this.acessorios = acessorios;
+	}
    
 }

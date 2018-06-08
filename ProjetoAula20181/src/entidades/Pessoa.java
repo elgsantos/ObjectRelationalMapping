@@ -1,6 +1,7 @@
 package entidades;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -57,6 +59,9 @@ public class Pessoa {
 	@OneToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
+	
+	@OneToMany(mappedBy = "pessoa")
+	private List<Dispositivo> dispositivos;
 	
 	public int getId() {
 		return id;
@@ -124,18 +129,26 @@ public class Pessoa {
 		this.foto = foto;
 	}
 
-	@Override
-	public String toString() {
-		return "Pessoa [id=" + id + ", nome=" + nome + ", salario=" + salario + ", tipoPessoa=" + tipoPessoa
-				+ ", dataNascimento=" + dataNascimento + "]";
-	}
-
 	public Endereco getEndereco() {
 		return endereco;
 	}
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
-	}	
+	}
+	
+	public List<Dispositivo> getDispositivos() {
+		return dispositivos;
+	}
+
+	public void setDispositivos(List<Dispositivo> dispositivos) {
+		this.dispositivos = dispositivos;
+	}
+
+	@Override
+	public String toString() {
+		return "Pessoa [id=" + id + ", nome=" + nome + ", salario=" + salario + ", tipoPessoa=" + tipoPessoa
+				+ ", dataNascimento=" + dataNascimento + "]";
+	}
 	
 }
