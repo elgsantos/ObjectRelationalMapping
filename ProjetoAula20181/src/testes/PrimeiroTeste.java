@@ -5,8 +5,10 @@ import java.io.IOException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import entidades.Aluno;
-import entidades.Professor;
+import entidades.AlunoJOINED;
+import entidades.AlunoTABpCLA;
+import entidades.ProfessorJOINED;
+import entidades.ProfessorTABpCLA;
 import util.JPAutil;
 
 public class PrimeiroTeste {
@@ -484,6 +486,66 @@ public class PrimeiroTeste {
 		unGerenciadora.close();
 		JPAutil.close();
 		*/
+		/*TESTANDO MAPEAMENTO DE HERANÇA - TABELA POR CLASSE*/
+		/*
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		
+		ProfessorJOINED p = new ProfessorJOINED();
+		
+		p.setNome("Thiago");
+		p.setCurso("Sistemas de Informação");
+		p.setLotacao("UNIDADE RJ");
+		p.setSalario(1000.00);
+		
+		unGerenciadora.persist(p);
+		
+		
+		AlunoJOINED a = new AlunoJOINED();
+		a.setNome("Thiago");
+		a.setMensalidade(1000.00);
+		a.setEstagiario(true);
+		
+		unGerenciadora.persist(a);
+		
+		
+		tx.commit();
+		
+		unGerenciadora.close();
+		JPAutil.close();
+		*/
+		/*TESTANDO MAPEAMENTO DE HERANÇA - TABELA POR CLASSE CONCRETA*/
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		EntityTransaction tx = unGerenciadora.getTransaction();
+		
+		tx.begin();
+		
+		
+		ProfessorTABpCLA p = new ProfessorTABpCLA();
+		
+		p.setNome("Thiago");
+		p.setCurso("Sistemas de Informação");
+		p.setLotacao("UNIDADE RJ");
+		p.setSalario(1000.00);
+		
+		unGerenciadora.persist(p);
+		
+		
+		AlunoTABpCLA a = new AlunoTABpCLA();
+		a.setNome("Thiago");
+		a.setMensalidade(1000.00);
+		a.setEstagiario(true);
+		
+		unGerenciadora.persist(a);
+		
+		
+		tx.commit();
+		
+		unGerenciadora.close();
+		JPAutil.close();
 	}
 
 }

@@ -12,6 +12,12 @@
 		<class>entidades.Persona</class>
 		<class>entidades.Aluno</class>
 		<class>entidades.Professor</class>
+		<class>entidades.PersonaJOINED</class>
+		<class>entidades.ProfessorJOINED</class>
+		<class>entidades.AlunoJOINED</class>
+		<class>entidades.PersonaTABpCLA</class>
+		<class>entidades.ProfessorTABpCLA</class>
+		<class>entidades.AlunoTABpCLA</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/aulajpa"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
