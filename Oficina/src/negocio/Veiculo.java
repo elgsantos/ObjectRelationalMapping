@@ -4,20 +4,18 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "veiculo")
-public class Veiculo {
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class Veiculo {
 
 	@Id
-	@SequenceGenerator(name="VEICULO_ID_GENERATOR", sequenceName="SEQ")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="VEICULO_ID_GENERATOR")
+	@Column(name = "id")
+	@GeneratedValue(generator = "gen_veiculo", strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "gen_veiculo", sequenceName = "seq_veiculo", schema = "oficina")
 	public int id;
 
+	@Column(name="tipo")
 	public String tipo;
 	
-	private Cliente cliente;
-
-	public Veiculo() {
-	}
-
 	public int getId() {
 		return this.id;
 	}
@@ -33,15 +31,5 @@ public class Veiculo {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
 	
-	
-
 }

@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="carro")
+@Table(name = "carro")
+@PrimaryKeyJoinColumn(name="veiculo_id")
 public class Carro extends Veiculo{
 	
 	@Column
@@ -20,18 +21,14 @@ public class Carro extends Veiculo{
 	private String placa;
 	
 	@ManyToOne
-	@JoinColumn(name="Modelo_id", referencedColumnName="id")
+	@JoinColumn(name="modelo_id", referencedColumnName="id")
 	private Modelo modelo;
 	
 	@ManyToOne
 	@JoinColumn(name="Cliente_id", referencedColumnName="id")
 	private Cliente cliente;
-
+	
 	private List<Manutencao> listaManutencao;
-
-	public Carro() {
-		super();//?
-	}
 
 	public String getCombustivel() {
 		return this.combustivel;
@@ -73,14 +70,6 @@ public class Carro extends Veiculo{
 		this.modelo = modelo;
 	}
 
-	public Cliente getCliente() {
-		return this.cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
 	public List<Manutencao> getListaManutencao() {
 		return listaManutencao;
 	}
@@ -89,6 +78,12 @@ public class Carro extends Veiculo{
 		this.listaManutencao = listaManutencao;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
 
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 
 }
