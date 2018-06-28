@@ -1,20 +1,20 @@
 package negocio;
 
-import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-public class Utiliza implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Utiliza{
 	
-	@EmbeddedId
+	@Id
+	
+	
+	@ManyToOne
+	@JoinColumn(name="manutencao_id", referencedColumnName="id")
 	private Manutencao manutencao;
+	
 	private Peca peca;
 	
 	private int qtd;	
-
-	public Utiliza() {
-	}
 
 	public int getQtd() {
 		return this.qtd;

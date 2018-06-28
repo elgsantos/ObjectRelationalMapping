@@ -5,6 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "carro")
+@NamedQuery(name="Carro.findAll", query="SELECT c FROM Carro c")
 @PrimaryKeyJoinColumn(name="veiculo_id")
 public class Carro extends Veiculo{
 	
@@ -25,9 +26,10 @@ public class Carro extends Veiculo{
 	private Modelo modelo;
 	
 	@ManyToOne
-	@JoinColumn(name="Cliente_id", referencedColumnName="id")
+	@JoinColumn(name="cliente_id", referencedColumnName="id")
 	private Cliente cliente;
 	
+	@OneToMany(mappedBy="carro", fetch=FetchType.EAGER, cascade = {CascadeType.REMOVE})
 	private List<Manutencao> listaManutencao;
 
 	public String getCombustivel() {
@@ -86,4 +88,10 @@ public class Carro extends Veiculo{
 		this.cliente = cliente;
 	}
 
+	@Override
+	public String toString() {
+		return "Carro [combustivel=" + combustivel + ", km=" + km + ", marca=" + marca + ", placa=" + placa
+				+ ", modelo=" + modelo + ", listaManutencao=" + listaManutencao + "]";
+	}
+	
 }

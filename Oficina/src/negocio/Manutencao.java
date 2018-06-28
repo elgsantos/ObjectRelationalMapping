@@ -1,19 +1,22 @@
 package negocio;
 
-import java.io.Serializable;
 import javax.persistence.*;
+
+import negocio.Utiliza;
+import negocio.Carro;
+
 import java.util.Date;
+import java.util.List;
 
-@Embeddable
-public class Manutencao implements Serializable {
+@Entity
+@Table(name = "manutencao")
+public class Manutencao{
 
-	private static final long serialVersionUID = 1L;
-
-	@SequenceGenerator(name="MANUTENCAO_ID_GENERATOR", sequenceName="SEQ")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="MANUTENCAO_ID_GENERATOR")
-	private int id;
-
-	//private int carro_id;
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(generator = "gen_manutencao", strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "gen_manutencao", sequenceName = "seq_manutencao", schema = "oficina")
+	public int id;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="data_entrada")
@@ -25,7 +28,12 @@ public class Manutencao implements Serializable {
 
 	private float preco;
 
-	//private Carro carro;
+	@ManyToOne
+	@JoinColumn(name="carro_id", referencedColumnName="id")
+	private Carro carro;
+	
+	@OneToMany(mappedBy="manutencao", cascade = {CascadeType.PERSIST,CascadeType.REMOVE} , fetch=FetchType.EAGER)
+	private List<Utiliza> listautiliza;
 
 	public Manutencao() {
 	}
@@ -60,6 +68,36 @@ public class Manutencao implements Serializable {
 
 	public void setPreco(float preco) {
 		this.preco = preco;
+	}
+
+	public Carro getCarro() {
+		return carro;
+	}
+
+	public void setCarro(Carro carro) {
+		this.carro = carro;
+	}
+
+	public List<Utiliza> getListautiliza() {
+		return listautiliza;
+	}
+
+	public void setListautiliza(List<Utiliza> listautiliza) {
+		this.listautiliza = listautiliza;
+	}
+	
+	public Utiliza addUtiliza(Utiliza utiliza) {
+		getListautiliza().add(utiliza);
+		utiliza.setManutencao(this);
+
+		return utiliza;
+	}
+
+	public Utiliza removeUtiliza(Utiliza utiliza) {
+		getListautiliza().remove(utiliza);
+		utiliza.setManutencao(null);
+
+		return utiliza;
 	}
 
 	@Override

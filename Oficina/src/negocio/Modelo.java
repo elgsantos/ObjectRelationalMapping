@@ -20,7 +20,7 @@ public class Modelo {
 	@Column
 	private int numpassageiro;
 	
-	@OneToMany(mappedBy="modelo", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="modelo", cascade = {CascadeType.PERSIST,CascadeType.REMOVE},  fetch=FetchType.EAGER)
 	@JoinColumn(name = "Modelo_id")
 	private List<Carro> carros;
 
