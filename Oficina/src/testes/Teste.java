@@ -1,6 +1,8 @@
 package testes;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,9 +11,12 @@ import javax.persistence.TypedQuery;
 
 import dao.CarroDAO;
 import dao.ClienteDAO;
+import dao.ManutencaoDAO;
 import dao.ModeloDAO;
+import negocio.Manutencao;
 import negocio.Carro;
 import negocio.Cliente;
+import negocio.Manutencao;
 import negocio.Modelo;
 import util.JPAutil;
 
@@ -42,6 +47,10 @@ public class Teste {
 	        		break;
 	        	case 2:
 		        	menuCarro();
+		        	
+		        	break;
+	        	case 3:
+		        	menuManutencao();
 		        	
 		        	break;
 			default:
@@ -186,39 +195,13 @@ public class Teste {
 	        
 	        switch (op) {
 	        case 1:
-	        	Modelo m = new Modelo();
 	        	Carro c = new Carro();
-	        	System.out.println("Digite o tipo do carro");
-	    		c.setTipo(inp.next());
-	    		System.out.println("Digite o tipo de combustível");
-	    		c.setCombustivel(inp.next());
-	    		System.out.println("Digite o km percorrido do carro");
-	    		c.setKm(inp.nextInt());
-	    		System.out.println("Digite a marca do carro");
-	    		c.setMarca(inp.next());
-	    		System.out.println("Insira o id do modelo (0 para novo):");
-	    		int num = inp.nextInt(); 
- 	    		if(num!=0) {
-	    			c.setModelo(modeloDAO.consultarPorId(num));
-	    		}else {
-	    			c.setModelo(novoModelo());
-	    			modeloDAO.salvar(c.getModelo());
-	    		}
-	    		
-	    		System.out.println("Insira o id do cliente:");
-	    		Cliente cli=clienteDAO.consultarPorId(inp.nextInt());
-	    		c.setCliente(cli);
-	    		System.out.println("Digite a placa do carro");
-	    		c.setPlaca(inp.next());
-	    		List<Carro> carros = new ArrayList<Carro>();
-	    		carros.add(c);
-	    		m.setCarros(carros);
-	    		cli.setCarros(carros);
-	    		c = carroDAO.salvar(c);	    		
+	        	
+	    		c = carroDAO.salvar(novoCarro());	    		
 	            break;
 	        case 2:
 	        	System.out.println("Insira o id:");
-	    		Carro car = carroDAO.consultarPorId(inp.nextInt());
+	        	Carro car = carroDAO.consultarPorId(inp.nextInt());
 	    		
 	    		System.out.println(car.toString());
 	    		
@@ -261,6 +244,97 @@ public class Teste {
 	        }
 	    }
 	}
+	public static void menuManutencao() throws Exception {
+		ClienteDAO clienteDAO = new ClienteDAO();
+		ModeloDAO modeloDAO = new ModeloDAO();
+		ManutencaoDAO manutencaoDAO = new ManutencaoDAO();
+		CarroDAO carroDAO = new CarroDAO();
+		Scanner inp = new Scanner(System.in);
+		EntityManager unGerenciadora = JPAutil.getEntityManager();
+		int op;
+		while (true) {
+
+	        System.out.println(
+	        		  "---------------------------------------------\n"
+	    	        + "| Escolha sua opção:                        |\n" 
+	                + "| 1 Incluir Manutenção                      |\n"
+	                + "| 2 Consultar Manutenção                    |\n"
+	                + "| 3 Atualizar Manutenção                    |\n"
+	                + "| 4 Excluir Manutenção                      |\n"
+	                + "| 5 Listar Manutenção                       |\n" 
+	                + "| Voltar para o menu: qualquer outro número |\n" 
+	                + "---------------------------------------------\n"
+	                );
+
+	        op = inp.nextInt();
+	        
+	        switch (op) {
+	        case 1:
+	        	SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+	        	Manutencao m = new Manutencao();
+	        	System.out.println("Digite a data de entrada: ");
+	        	Date data = formato.parse(inp.next());
+	    		m.setDataEntrada(data);
+	    		System.out.println("Digite a data de saída: ");
+	    		data = formato.parse(inp.next());
+	    		m.setDataRetirada(data);
+	    		System.out.println("Insira o id do carro (0 para novo):");
+	    		int num = inp.nextInt(); 
+ 	    		if(num!=0) {
+	    			m.setCarro(carroDAO.consultarPorId(num));
+	    		}else {
+	    			m.setCarro(novoCarro());
+	    			carroDAO.salvar(m.getCarro());
+	    		}
+	    		
+	    		System.out.println("Insira o preço:");
+	    		m.setPreco(inp.nextFloat());
+	    		
+				m = manutencaoDAO.salvar(m);	    		
+	            break;
+	        case 2:
+	        	System.out.println("Insira o id:");
+	    		Manutencao man = manutencaoDAO.consultarPorId(inp.nextInt());
+	    		
+	    		System.out.println(man.toString());
+
+	    		break;
+	        case 3:
+	        	System.out.println("Insira o id:");
+	        	Manutencao man1 = unGerenciadora.find(Manutencao.class, inp.nextInt());
+	        	unGerenciadora.getTransaction().begin();
+
+	        	System.out.println("Manutenção Atualizada");
+	        	unGerenciadora.getTransaction().commit();
+	        	break;
+	        case 4:
+	        	System.out.println("Insira o id:");
+	        	int id=inp.nextInt();
+	    		String ctz="n";
+	    		do {
+	    			System.out.println("Tem certeza que deseja excluir a Manutenção de id="+id+"? (s ou n): ");
+	    			ctz = inp.next();
+	    		}while(!ctz.equals("s")&&!ctz.equals("n"));
+	    		if(ctz.equals("s")) {
+	    			manutencaoDAO.apagar(inp.nextInt());
+	    		}else {
+	    			System.out.println("Operação cancelada");
+	    		}
+	    		break;
+	        case 5:
+	        	  TypedQuery<Manutencao> query =
+	        			  unGerenciadora.createNamedQuery("Manutencao.findAll", Manutencao.class);
+	        	  List<Manutencao> results = query.getResultList();
+	        	  for (Manutencao manRes : results) {
+	        		  System.out.println(manRes.toString());
+	        	  }
+	        	break;
+	        default:
+	            return;
+
+	        }
+	    }
+	}
 	private static Carro updateCarro(Carro carro) {
 		Scanner inp = new Scanner(System.in);		
 	    System.out.println("Insira o novo KM (somente numeros):");
@@ -292,6 +366,41 @@ public class Teste {
 		m.setNome(inp.next());
 		return m;
     	
+    }
+    public static Carro novoCarro() throws Exception {
+    	Scanner inp = new Scanner(System.in);
+    	Modelo m = new Modelo();
+    	ModeloDAO modeloDAO = new ModeloDAO();
+    	ClienteDAO clienteDAO = new ClienteDAO();
+    	Carro c = new Carro();
+    	System.out.println("Digite o tipo do carro");
+		c.setTipo(inp.next());
+		System.out.println("Digite o tipo de combustível");
+		c.setCombustivel(inp.next());
+		System.out.println("Digite o km percorrido do carro");
+		c.setKm(inp.nextInt());
+		System.out.println("Digite a marca do carro");
+		c.setMarca(inp.next());
+		System.out.println("Insira o id do modelo (0 para novo):");
+		int num = inp.nextInt(); 
+ 		if(num!=0) {
+			c.setModelo(modeloDAO.consultarPorId(num));
+		}else {
+			c.setModelo(novoModelo());
+			modeloDAO.salvar(c.getModelo());
+		}
+		
+		System.out.println("Insira o id do cliente:");
+		Cliente cli=clienteDAO.consultarPorId(inp.nextInt());
+		c.setCliente(cli);
+		System.out.println("Digite a placa do carro");
+		c.setPlaca(inp.next());
+		List<Carro> carros = new ArrayList<Carro>();
+		carros.add(c);
+		m.setCarros(carros);
+		cli.setCarros(carros);
+		return c;
+		
     }
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "manutencao")
+@NamedQuery(name="Manutencao.findAll", query="SELECT c FROM Manutencao c")
 public class Manutencao{
 
 	@Id
@@ -137,6 +138,12 @@ public class Manutencao{
 		if (Float.floatToIntBits(preco) != Float.floatToIntBits(other.preco))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Manutencao [id=" + id + ", preco="
+				+ preco + ", carro=" + carro + "]";
 	}
 
 }
